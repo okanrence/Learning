@@ -235,7 +235,42 @@ namespace ConsoleApp1
             return minLength == int.MaxValue ? 0 : minLength;
         }
 
+        public static int findLength(char[] arr)
+        {
+            /*loop through chars
+             add each char to a dictionary, if it already exists, increment the key by 1, 
+             until we have k distinct characters in the dictionary. This will represent our current sliding window 
+             And current max length will be the diffrence between the syart of the window and the end.
+             check if total lenth of dictionary is more than k, then decrement the sliding window while adding a new char to the dictionary
+             and update the max length each time 
+              */
 
+            Dictionary<char, int> dict = new Dictionary<char, int>();
+            int windowStart = 0;
+            int maxlength = 0;
+            int k = 2;
+            for (int windowEnd = 0; windowEnd < arr.Length; windowEnd++)
+            {
+                char currentChar = arr[windowEnd];
+                if (dict.ContainsKey(currentChar))
+                    dict[currentChar] = dict[currentChar] + 1;
+                else
+                    dict.Add(currentChar, 1);
+
+
+                while(dict.Count > k)
+                {
+                    char firstChar = arr[windowStart++];
+                    dict[firstChar] = dict[firstChar] - 1;
+                    if (dict[firstChar] == 0) dict.Remove(firstChar);
+                }
+
+                maxlength = Math.Max(maxlength, windowEnd - windowStart + 1);
+
+                
+            }
+            return maxlength;
+        }
         public static int findLength(String str, int k)
         {
             if (string.IsNullOrEmpty(str) || str.Length < k) throw new InvalidOperationException();
@@ -291,6 +326,40 @@ namespace ConsoleApp1
 
             return max;
         }
+
+
+        public static int findLength(String str)
+        {
+            // find the length of the longest substring which has no repeating characters.
+
+
+            if (string.IsNullOrEmpty(str)) throw new InvalidOperationException();
+
+            int windowStart = 0; int windowEnd = 0;
+            var keyValuePairs = new Dictionary<char, int>();
+            for( windowEnd = 0; windowEnd< str.Length; windowEnd++)
+            {
+                var currentChar = str[windowEnd];
+                if (keyValuePairs.ContainsKey(currentChar))
+                    keyValuePairs[currentChar] += 1;
+                else
+                    keyValuePairs.Add(currentChar, 1);
+
+
+                while(keyValuePairs.Count < windowEnd)
+                {
+                    var firstChar = str[windowStart++];
+                    keyValuePairs[firstChar] -= 1;
+                    if (keyValuePairs[firstChar] == 0) keyValuePairs.Remove(firstChar);
+
+
+                }
+
+               
+                    
+            }
+            return windowEnd - windowStart + 1; 
+        }
         static void Main(string[] args)
         {
 
@@ -298,8 +367,8 @@ namespace ConsoleApp1
 
             int k1 = 2;
 
-            string str = "araaci";
-            var max = findLength(str, 2);
+            string str = "aabccbb";
+            var max = findLength(str);
            // var da = findMinSubArray(8, arr1);
             // var max = findMaxSumSubArray(k1, arr1);
 
