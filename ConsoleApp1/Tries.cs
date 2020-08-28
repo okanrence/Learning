@@ -188,9 +188,6 @@ namespace ConsoleApp1.Tries
             {
                 CountWords(item, count);
             }
-            
-             
-
         }
         public bool Contains(string word)
         {

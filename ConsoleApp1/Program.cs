@@ -258,7 +258,7 @@ namespace ConsoleApp1
                     dict.Add(currentChar, 1);
 
 
-                while(dict.Count > k)
+                while (dict.Count > k)
                 {
                     char firstChar = arr[windowStart++];
                     dict[firstChar] = dict[firstChar] - 1;
@@ -267,7 +267,7 @@ namespace ConsoleApp1
 
                 maxlength = Math.Max(maxlength, windowEnd - windowStart + 1);
 
-                
+
             }
             return maxlength;
         }
@@ -284,7 +284,7 @@ namespace ConsoleApp1
              */
 
             Dictionary<char, int> result = new Dictionary<char, int>();
-            int windowStart =0; int max = 0;
+            int windowStart = 0; int max = 0;
             for (int windowEnd = 0; windowEnd < str.Length; windowEnd++)
             {
                 char currentChar = str[windowEnd];
@@ -335,9 +335,10 @@ namespace ConsoleApp1
 
             if (string.IsNullOrEmpty(str)) throw new InvalidOperationException();
 
-            int windowStart = 0; int windowEnd = 0;
+            int windowStart = 0;
             var keyValuePairs = new Dictionary<char, int>();
-            for( windowEnd = 0; windowEnd< str.Length; windowEnd++)
+            int windowEnd;
+            for (windowEnd = 0; windowEnd < str.Length; windowEnd++)
             {
                 var currentChar = str[windowEnd];
                 if (keyValuePairs.ContainsKey(currentChar))
@@ -346,7 +347,7 @@ namespace ConsoleApp1
                     keyValuePairs.Add(currentChar, 1);
 
 
-                while(keyValuePairs.Count < windowEnd)
+                while (keyValuePairs.Count > windowEnd)
                 {
                     var firstChar = str[windowStart++];
                     keyValuePairs[firstChar] -= 1;
@@ -355,24 +356,177 @@ namespace ConsoleApp1
 
                 }
 
-               
-                    
+
+
             }
-            return windowEnd - windowStart + 1; 
+            return windowEnd - windowStart + 1;
         }
+
+        public static bool findPermutation(string str, string pattern)
+        {
+            if ((pattern.Length > str.Length) || string.IsNullOrEmpty(str) || string.IsNullOrEmpty(pattern)) return false;
+
+            //add all chars in pattern into a dictionary and track frequencies of repeated chars
+            var dict = new Dictionary<char, int>();
+            foreach (var chr in pattern)
+            {
+                if (dict.ContainsKey(chr))
+                    dict[chr]++;
+                else
+                    dict.Add(chr, 1);
+            }
+
+            int windowStart = 0; int windowEnd = 0; int matched = 0;
+            //if a char in the str exists in the dict, decrement the frequency and increment the matched counter.
+            for (windowEnd = 0; windowEnd < str.Length; windowEnd++)
+            {
+                var currentChar = str[windowEnd];
+                if (dict.ContainsKey(currentChar))
+                {
+                    dict[currentChar]--;
+                    if (dict[currentChar] == 0)
+                        matched++;
+                }
+
+                if (matched == dict.Count())
+                    return true;
+
+                if (windowEnd >= pattern.Length - 1)
+                {
+                    var leftChar = str[windowStart++];
+                    if (dict.ContainsKey(leftChar))
+                    {
+                        if (dict[leftChar] == 0)
+                            matched--;
+
+                        dict[leftChar]++;
+                    }
+                }
+            }
+            return false;
+            //if the frequency is 0, then that char is completely matched.
+            //if the matched counter is equal to the number of distinct chars in dict (dict.length) then we have found our required permutation
+            //however, if the window is now greater than the lent of the pattern then we havent found the right permutation so we need to slide the window
+            // when sliding, if the char we are sliding out is contained in teh dict, then we need to add it back and decrement our counter
+
+
+        }
+
+        public static void MakeTheNumbersMatch(int a, int b, int x, int y)
+        {
+            while (a != x)
+            {
+                if (a > x)
+                {
+                    a--;
+                }
+                else
+                {
+                    a++;
+                }
+
+            }
+
+            while (b != y)
+            {
+
+                if (b > y)
+                {
+                    b--;
+                }
+                else
+                {
+                    b++;
+                }
+            }
+
+
+            //while (a != x || b != y)
+            //{
+            //    if (a > x)
+            //    {
+            //        a--;
+            //    }
+            //    else
+            //    {
+            //        a++;
+            //    }
+            //    if (b > y)
+            //    {
+            //        b--;
+            //    }
+            //    else
+            //    {
+            //        b++;
+            //    }
+            //}
+        }
+
+
+        private static string reverseWords(string sentence)
+        {
+            if (string.IsNullOrEmpty(sentence)) return string.Empty;
+
+            var words = sentence.Split(' ');
+            var stack = new Stack<string>();
+            var output = new StringBuilder();
+            foreach (var item in words)
+            {
+                stack.Push(item);
+            }
+
+            while (stack.Count > 0)
+            {
+                output.Append(stack.Pop() + ' ');
+            }
+
+            return output.ToString();
+        }
+
+        private static string reverseWords1(string sentence)
+        {
+            if (string.IsNullOrEmpty(sentence)) return string.Empty;
+            var output = new StringBuilder();
+
+            var words = sentence.Split(' ');
+            for (int i = words.Length - 1; i >= 0; i--)
+            {
+                output.Append(words[i] + ' ');
+            }
+
+            return output.ToString();
+        }
+
+
         static void Main(string[] args)
         {
+         //   var dsgjb = reverseWords1("this is a sentence");
+
+            MakeTheNumbersMatch(5, 8, 3, 11);
+
+            TreeNode root = new TreeNode(12);
+            root.left = new TreeNode(7);
+            root.right = new TreeNode(1);
+            root.left.left = new TreeNode(9);
+            root.left.right = new TreeNode(2);
+            root.right.left = new TreeNode(10);
+            root.right.right = new TreeNode(5);
+
+            // System.Console.WriteLine("Level order traversal: " + result);
+
+            var rs = TreeExercises.findSuccessor(root, 7);
 
             int[] arr1 = new int[] { 2, 1, 5, 2, 8 };
 
             int k1 = 2;
 
-            string str = "aabccbb";
-            var max = findLength(str);
-           // var da = findMinSubArray(8, arr1);
+            string str = "bcdxabcdy";
+            string pattern = "bcdxabcdy";
+            var max = findPermutation(str, pattern);
+
+            //  var max = findLength(str);
+            // var da = findMinSubArray(8, arr1);
             // var max = findMaxSumSubArray(k1, arr1);
-
-
 
             double windowSum = 0;
             int windowStart = 0;
