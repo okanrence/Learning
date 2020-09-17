@@ -1,4 +1,5 @@
 ﻿using DataStructuresAndAlgos;
+using DataStructuresAndAlgos.Patterns;
 using Microsoft.CognitiveServices.Speech;
 using Microsoft.CognitiveServices.Speech.Transcription;
 using System;
@@ -9,6 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO.IsolatedStorage;
 using System.Linq;
 using System.Net;
+using System.Net.WebSockets;
 using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -18,23 +20,9 @@ using static ConsoleApp1.Tree;
 
 namespace ConsoleApp1
 {
+
     class Program
     {
-
-        static void greet(string anything, string anthing2)
-        {
-            var message = "a";
-            Console.WriteLine(message);
-            Console.WriteLine(anything);
-            Console.WriteLine(anthing2);
-        }
-
-        static void greet2(string anything)
-        {
-            var message = "jhgkjh,bkhb";
-            Console.WriteLine(message);
-            Console.WriteLine(anything);
-        }
 
         public static int[] HeapSort(int[] array)
         {
@@ -94,322 +82,32 @@ namespace ConsoleApp1
             return digits;
         }
 
-        public static int Atoi(string str)
-        {
-            long num = 0;
-            bool signFound = false;
-            bool digitFound = false;
-            bool isNegative = false;
-
-            foreach (var c in str)
-            {
-                if (c == ' ')
-                {
-                    if (digitFound || signFound)
-                        break;
-                    else continue;
-                }
-
-                if ((c == '+' || c == '-' || Char.IsDigit(c)))
-                {
-                    if (c == '+' || c == '-')
-                    {
-                        if (!signFound && !digitFound)
-                        {
-                            signFound = true;
-                            if (c == '-') isNegative = true;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-
-                    if (Char.IsDigit(c))
-                    {
-                        int value = c - '0';
-                        if (value > 9) break;
-                        num = num * 10 + value;
-                        digitFound = true;
-
-                    }
-                    else
-                    {
-                        if (digitFound) break;
-
-                    }
-                }
-                else
-                {
-                    if (digitFound)
-                    {
-                        break;
-                    }
-                    else
-                    {
-                        return 0;
-                    }
-
-                }
-            }
-
-            if (digitFound)
-            {
-                if (isNegative)
-                    num *= -1;
-                else if (!isNegative && num < 0)
-                    return int.MaxValue;
-
-                if (num >= int.MaxValue)
-                    return int.MaxValue;
-                else if (num <= int.MinValue)
-                    return int.MinValue;
-                else
-                {
-                    int result = (int)num;
-                    return result;
-                }
-            }
-            else
-                return 0;
-        }
-
-        public static int findMinSubArray(int S, int[] arr)
-        {
-            int windowEnd;
-            int windowStart = 0;
-            int sum = 0;
 
 
-            for (int i = 0; i < arr.Length; i++)
-            {
-                if (arr[i] >= S)
-                {
-                    return 1;
-                }
-            }
 
-            for (int k = 2; k < arr.Length - 1; k++)
-            {
-                for (windowEnd = 0; windowEnd < arr.Length; windowEnd++)
-                {
-                    sum += arr[windowEnd];
-
-                    if (windowEnd >= k - 1)
-                    {
-
-                        if (sum >= S)
-                        {
-                            return k;
-                        }
-
-                        sum -= arr[windowStart++];
-
-                    }
-                }
-
-                sum = 0;
-            }
-
-            return 0;
-        }
-
-        public static int findMinSubArray2(int S, int[] arr)
-        {
-            int windowEnd;
-            int windowStart = 0;
-            int sum = 0;
-            int minLength = int.MaxValue;
-            for (windowEnd = 0; windowEnd < arr.Length; windowEnd++)
-            {
-                sum += arr[windowEnd];
-
-                while (sum >= S)
-                {
-                    minLength = Math.Min(minLength, windowEnd - windowStart + 1);
-                    sum -= arr[windowStart++];
-                }
-
-            }
-
-            return minLength == int.MaxValue ? 0 : minLength;
-        }
-
-        public static int findLength(char[] arr)
-        {
-            /*loop through chars
-             add each char to a dictionary, if it already exists, increment the key by 1, 
-             until we have k distinct characters in the dictionary. This will represent our current sliding window 
-             And current max length will be the diffrence between the syart of the window and the end.
-             check if total lenth of dictionary is more than k, then decrement the sliding window while adding a new char to the dictionary
-             and update the max length each time 
-              */
-
-            Dictionary<char, int> dict = new Dictionary<char, int>();
-            int windowStart = 0;
-            int maxlength = 0;
-            int k = 2;
-            for (int windowEnd = 0; windowEnd < arr.Length; windowEnd++)
-            {
-                char currentChar = arr[windowEnd];
-                if (dict.ContainsKey(currentChar))
-                    dict[currentChar] = dict[currentChar] + 1;
-                else
-                    dict.Add(currentChar, 1);
-
-
-                while (dict.Count > k)
-                {
-                    char firstChar = arr[windowStart++];
-                    dict[firstChar] = dict[firstChar] - 1;
-                    if (dict[firstChar] == 0) dict.Remove(firstChar);
-                }
-
-                maxlength = Math.Max(maxlength, windowEnd - windowStart + 1);
-
-
-            }
-            return maxlength;
-        }
-        public static int findLength(String str, int k)
-        {
-            if (string.IsNullOrEmpty(str) || str.Length < k) throw new InvalidOperationException();
-
-            /*loop through chars
-            add each char to a dictionary, if it already exists, increment the key by 1, 
-            until we have k distinct characters in the dictionary. This will represent our current sliding window 
-            And current max length will be the diffrence between the syart of the window and the end.
-            check if total lenth of dictionary is more than k, then decrement the sliding window while adding a new char to the dictionary
-            and update the max length each time 
-             */
-
-            Dictionary<char, int> result = new Dictionary<char, int>();
-            int windowStart = 0; int max = 0;
-            for (int windowEnd = 0; windowEnd < str.Length; windowEnd++)
-            {
-                char currentChar = str[windowEnd];
-                if (result.ContainsKey(currentChar))
-                    result[currentChar] = result[currentChar] + 1;
-                else
-                    result[currentChar] = 1;
-
-                while (result.Count > k)
-                {
-                    var leftmostChar = str[windowStart++];
-                    result[leftmostChar] = result[leftmostChar] - 1;
-                    if (result[leftmostChar] == 0) result.Remove(leftmostChar);
-                }
-                max = Math.Max(max, windowEnd - windowStart + 1);
-
-            }
-            return max;
-        }
-
-        public static int findMaxSumSubArray(int k, int[] arr)
+        public static int maxLengthOfNonRepeatingSubstring(string str)
         {
 
-            int windowSum = 0;
-            int max = int.MinValue;
-            int windowStart = 0;
-            int windowEnd = 0;
-
-            for (windowEnd = 0; windowEnd < arr.Length; windowEnd++)
-            {
-                windowSum += arr[windowEnd];
-
-                if (windowEnd >= k - 1)
-                {
-                    max = max > windowSum ? max : windowSum;
-                    windowSum -= arr[windowStart++];
-                }
-            }
-
-            return max;
-        }
-
-
-        public static int findLength(String str)
-        {
-            // find the length of the longest substring which has no repeating characters.
-
-
-            if (string.IsNullOrEmpty(str)) throw new InvalidOperationException();
-
-            int windowStart = 0;
-            var keyValuePairs = new Dictionary<char, int>();
-            int windowEnd;
-            for (windowEnd = 0; windowEnd < str.Length; windowEnd++)
-            {
-                var currentChar = str[windowEnd];
-                if (keyValuePairs.ContainsKey(currentChar))
-                    keyValuePairs[currentChar] += 1;
-                else
-                    keyValuePairs.Add(currentChar, 1);
-
-
-                while (keyValuePairs.Count > windowEnd)
-                {
-                    var firstChar = str[windowStart++];
-                    keyValuePairs[firstChar] -= 1;
-                    if (keyValuePairs[firstChar] == 0) keyValuePairs.Remove(firstChar);
-
-
-                }
-
-
-
-            }
-            return windowEnd - windowStart + 1;
-        }
-
-        public static bool findPermutation(string str, string pattern)
-        {
-            if ((pattern.Length > str.Length) || string.IsNullOrEmpty(str) || string.IsNullOrEmpty(pattern)) return false;
-
-            //add all chars in pattern into a dictionary and track frequencies of repeated chars
+            //aabccbb
+            if (string.IsNullOrEmpty(str)) return 0;
             var dict = new Dictionary<char, int>();
-            foreach (var chr in pattern)
-            {
-                if (dict.ContainsKey(chr))
-                    dict[chr]++;
-                else
-                    dict.Add(chr, 1);
-            }
 
-            int windowStart = 0; int windowEnd = 0; int matched = 0;
-            //if a char in the str exists in the dict, decrement the frequency and increment the matched counter.
+            int max = 0; int windowStart = 0; int windowEnd = 0;
+
             for (windowEnd = 0; windowEnd < str.Length; windowEnd++)
             {
                 var currentChar = str[windowEnd];
                 if (dict.ContainsKey(currentChar))
-                {
-                    dict[currentChar]--;
-                    if (dict[currentChar] == 0)
-                        matched++;
-                }
+                    windowStart = Math.Max(windowStart, dict[currentChar] + 1);
 
-                if (matched == dict.Count())
-                    return true;
+                if (dict.ContainsKey(currentChar))
+                    dict[currentChar] = windowEnd;
+                else
+                    dict.Add(currentChar, windowEnd);
 
-                if (windowEnd >= pattern.Length - 1)
-                {
-                    var leftChar = str[windowStart++];
-                    if (dict.ContainsKey(leftChar))
-                    {
-                        if (dict[leftChar] == 0)
-                            matched--;
-
-                        dict[leftChar]++;
-                    }
-                }
+                max = Math.Max(max, windowEnd - windowStart + 1);
             }
-            return false;
-            //if the frequency is 0, then that char is completely matched.
-            //if the matched counter is equal to the number of distinct chars in dict (dict.length) then we have found our required permutation
-            //however, if the window is now greater than the lent of the pattern then we havent found the right permutation so we need to slide the window
-            // when sliding, if the char we are sliding out is contained in teh dict, then we need to add it back and decrement our counter
-
-
+            return max;
         }
 
         public static void MakeTheNumbersMatch(int a, int b, int x, int y)
@@ -497,24 +195,78 @@ namespace ConsoleApp1
             return output.ToString();
         }
 
+        public static int RomanToInteger(string s)
+        {
+            var dict = new Dictionary<string, int>
+            {
+                ["M"] = 1000,
+                ["D"] = 500,
+                ["C"] = 100,
+                ["L"] = 50,
+                ["X"] = 10,
+                ["V"] = 5,
+                ["I"] = 1,
+            };
+
+            string lastSymbol = s.Substring(s.Length - 1);
+            int lastValue = dict[lastSymbol];
+            int total = lastValue;
+
+            for (int i = s.Length - 2; i >= 0; i--)
+            {
+                string currentSymbol = s.Substring(i, 1);
+                int currentValue = dict[currentSymbol];
+                if (currentValue < lastValue)
+                {
+                    total -= currentValue;
+                }
+                else
+                {
+                    total += currentValue;
+                }
+                lastValue = currentValue;
+            }
+
+            return total;
+        }
 
         static void Main(string[] args)
         {
-         //   var dsgjb = reverseWords1("this is a sentence");
+
+            var 
+            var fssvs = SlidingWindow.isPalindrome("A man, a plan, a canal: Panama");
+            var hks = SlidingWindow.read(new char[] { 'c', 'd', 'b', 'w', 'f', 'b' }, 5);
+
+            var inf = new string[] { "eat", "tea", "tan", "ate", "nat", "bat" };
+
+            var edaj = SlidingWindow.MinWindow("cabwefgewcwaefgcf", "cae");
+         //   var dshs = "CXVII".Substring(3, 1);
+            var romd = RomanToInteger("CXVII");
+
+            var dhs = '7' - '0';
+
+            var reslt = 0;
+            var strd = "79";
+            var id = 0;
+            while (id < 2)
+            {
+                reslt = reslt * 10 + (strd[id++] - '0');
+
+            }
+
+            var resul = SlidingWindow.FindPermutation2("ppqp", "pq");
+
+            //string strd = "gbddoisssfnsdhfgns";
+
+            //var fsjn = maxLengthOfNonRepeatingSubstring(strd);
 
             MakeTheNumbersMatch(5, 8, 3, 11);
 
-            TreeNode root = new TreeNode(12);
-            root.left = new TreeNode(7);
-            root.right = new TreeNode(1);
-            root.left.left = new TreeNode(9);
-            root.left.right = new TreeNode(2);
-            root.right.left = new TreeNode(10);
-            root.right.right = new TreeNode(5);
+
 
             // System.Console.WriteLine("Level order traversal: " + result);
 
-            var rs = TreeExercises.findSuccessor(root, 7);
+            //var rs = TreeExercises.findSuccessor(root, 7);
 
             int[] arr1 = new int[] { 2, 1, 5, 2, 8 };
 
@@ -522,7 +274,7 @@ namespace ConsoleApp1
 
             string str = "bcdxabcdy";
             string pattern = "bcdxabcdy";
-            var max = findPermutation(str, pattern);
+            // var max = findPermutation(str, pattern);
 
             //  var max = findLength(str);
             // var da = findMinSubArray(8, arr1);
@@ -1032,6 +784,8 @@ namespace ConsoleApp1
 
 
         }
+
+
         public static int GetMinMoves(int N)
         {
             int movesCount = 0;

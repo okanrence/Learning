@@ -6,11 +6,7 @@ namespace DataStructuresAndAlgos
 {
    public class QuickSort
     {
-        public int[] sort(int[] array)
-        {
-
-        }
-        
+       
 
         public int partition(int [] array)
         {
