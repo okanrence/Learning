@@ -36,6 +36,7 @@ namespace DataStructuresAndAlgos.Patterns
             return minLength == int.MaxValue ? 0 : minLength;
         }
 
+
         /// <summary>
         /// Given an array of positive numbers and a positive number ‘k’, find the maximum sum of any contiguous subarray of size ‘k’.
         /// Example 1:Input: [2, 1, 5, 1, 3, 2], k=3; Output: 9;Explanation: Subarray with maximum sum is [5, 1, 3].
@@ -88,6 +89,7 @@ namespace DataStructuresAndAlgos.Patterns
             for (int windowEnd = 0; windowEnd < str.Length; windowEnd++)
             {
                 char currentChar = str[windowEnd];
+             var rs =   result.GetValueOrDefault(currentChar);
                 if (result.ContainsKey(currentChar))
                     result[currentChar]++;
                 else
@@ -277,7 +279,6 @@ namespace DataStructuresAndAlgos.Patterns
                 else
                     dict.Add(ch, 1);
             }
-
 
 
             for (windowEnd = 0; windowEnd < str.Length; windowEnd++)
@@ -503,6 +504,27 @@ namespace DataStructuresAndAlgos.Patterns
             }
 
             return true;
+        }
+
+        public static int SubarraySum(int[] nums, int k)
+        {
+            var dict = new Dictionary<int, int>
+            {
+                [0] = 1
+            };
+            int sum = 0;
+            int count = 0;
+            for (var i = 0; i <= nums.Length - 1; i++)
+            {
+                sum += nums[i];
+                var s = sum - k;
+                if (dict.ContainsKey(s))
+                {
+                    count += dict[s];
+                }
+                dict[sum] = dict.GetValueOrDefault(sum) + 1;
+            }
+            return count;
         }
 
     }

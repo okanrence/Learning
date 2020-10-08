@@ -123,7 +123,6 @@ namespace ConsoleApp1
             {
                 if (input[i] == zero) continue;
                 temp.Add(i);
-
             }
 
             for (int j = 0; j < temp.Count - 1; j++)
@@ -184,7 +183,7 @@ namespace ConsoleApp1
             var result = 1;
             for (var i = n; i > 1; i--)
             {
-                result = result * i;
+                result *= i;
             }
 
             return result;

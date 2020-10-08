@@ -13,10 +13,12 @@ namespace DataStructuresAndAlgos
         public int val { get; set; }
         public TreeNode left { get; set; }
         public TreeNode right { get; set; }
+        public TreeNode next { get; set; }
 
         public TreeNode(int x)
         {
             val = x;
+            left = right = next = null;
         }
 
 
@@ -36,9 +38,9 @@ namespace DataStructuresAndAlgos
             System.Console.WriteLine("Level order traversal: " + result);
         }
 
-        #region BFS
 
-      
+
+
 
         public static List<List<int>> BfTraversal(TreeNode root)
         {
@@ -110,14 +112,10 @@ namespace DataStructuresAndAlgos
             return result;
         }
 
-     
+
 
         public static List<List<int>> traverseReverse(TreeNode root)
         {
-            //insert root into a queue
-            //wwhile queue is not empty
-            //get current size of queue. 
-            //That will represent our level size. use the level size to pop the queue and insert into the level list
             List<List<int>> result = new List<List<int>>();
 
             var queue = new Queue<TreeNode>();
@@ -262,7 +260,8 @@ namespace DataStructuresAndAlgos
             return queue.Peek();
         }
 
-        #endregion
+
+
 
         public static bool HasPath(TreeNode root, int sum)
         {
@@ -270,7 +269,7 @@ namespace DataStructuresAndAlgos
 
             if (root.left == null && root.right == null && root.val == sum) return true;
 
-           return HasPath(root.left, sum - root.val) || HasPath(root.right, sum - root.val);
+            return HasPath(root.left, sum - root.val) || HasPath(root.right, sum - root.val);
         }
 
         //public static bool HasPathRecursive(TreeNode root, int sum)
@@ -280,7 +279,7 @@ namespace DataStructuresAndAlgos
         //    while(root.left !=null && root.right != null)
         //    {
         //        if (root.val == sum) return true;
-                
+
 
         //    }
 

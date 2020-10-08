@@ -233,14 +233,29 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
 
-            var 
+            var fsskhvs = DynamicProgramming.ValidPalindrome("canadanaec");
+
+            var wdordsdc = new int[] { 5,1,3,4,2,3,3,7,2,5 };
+
+            var fsdsvs = SlidingWindow.SubarraySum(wdordsdc,9);
+
+
+            var wordsdc = new string[] { "apple", "app" };
+            var order = "abcdefghijklmnopqrstuvwxyz";
+
+            var dshfnc = DynamicProgramming.IsAlienSorted(wordsdc, order);
+
+            var redda = DynamicProgramming.RestoreString("codeleet", new int[] { 4, 5, 6, 7, 0, 2, 1, 3 });
+
+            var maxProfit = DynamicProgramming.MaxProfit(new int[] { 7, 1, 5, 3, 6, 4 });
+
             var fssvs = SlidingWindow.isPalindrome("A man, a plan, a canal: Panama");
             var hks = SlidingWindow.read(new char[] { 'c', 'd', 'b', 'w', 'f', 'b' }, 5);
 
             var inf = new string[] { "eat", "tea", "tan", "ate", "nat", "bat" };
 
             var edaj = SlidingWindow.MinWindow("cabwefgewcwaefgcf", "cae");
-         //   var dshs = "CXVII".Substring(3, 1);
+            //   var dshs = "CXVII".Substring(3, 1);
             var romd = RomanToInteger("CXVII");
 
             var dhs = '7' - '0';
@@ -254,6 +269,7 @@ namespace ConsoleApp1
 
             }
 
+            //madam
             var resul = SlidingWindow.FindPermutation2("ppqp", "pq");
 
             //string strd = "gbddoisssfnsdhfgns";
