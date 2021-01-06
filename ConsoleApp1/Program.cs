@@ -233,7 +233,9 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
 
-            var fsskhvs = DynamicProgramming.ValidPalindrome("canadanaec");
+            var fsskhvs = TopologicalSort.AlienDictionary(new String[] { "ba", "bc", "ac", "cab" });
+            //var fsskhvs = TopologicalSort.Sort(4,  new int[][] { new int[] { 3, 2 }, new int[] { 3, 0 }, new int[] { 2, 0 }, new int[] { 2, 1 } });
+            //var fsskhvs = DynamicProgramming.ValidPalindrome("canadanaec");
 
             var wdordsdc = new int[] { 5,1,3,4,2,3,3,7,2,5 };
 
@@ -246,7 +248,7 @@ namespace ConsoleApp1
             var dshfnc = DynamicProgramming.IsAlienSorted(wordsdc, order);
 
             var redda = DynamicProgramming.RestoreString("codeleet", new int[] { 4, 5, 6, 7, 0, 2, 1, 3 });
-
+ 
             var maxProfit = DynamicProgramming.MaxProfit(new int[] { 7, 1, 5, 3, 6, 4 });
 
             var fssvs = SlidingWindow.isPalindrome("A man, a plan, a canal: Panama");
@@ -290,6 +292,7 @@ namespace ConsoleApp1
 
             string str = "bcdxabcdy";
             string pattern = "bcdxabcdy";
+
             // var max = findPermutation(str, pattern);
 
             //  var max = findLength(str);

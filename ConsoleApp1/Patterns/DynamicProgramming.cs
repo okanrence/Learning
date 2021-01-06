@@ -185,7 +185,7 @@ namespace DataStructuresAndAlgos.Patterns
 
             return Math.Max(profit1, profit2);
 
-            var car = Heap()
+            //var car = Heap()
         }
     }
 }
