@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -66,6 +67,7 @@ namespace DataStructuresAndAlgos.Patterns
             return max;
         }
 
+    
         /// <summary>
         /// Given a string, find the length of the longest substring in it with no more than K distinct characters. This is also the fruots in a basket problem : k will be the number of distinct fruits to be picked
         /// </summary>
@@ -525,6 +527,62 @@ namespace DataStructuresAndAlgos.Patterns
                 dict[sum] = dict.GetValueOrDefault(sum) + 1;
             }
             return count;
+        }
+        public static List<string> CheckDictionary()
+        {
+            var dictionary = new string[] { "p", "i", "water", "big", "apple", "watch", "banana", "york", "amsterdam", "orange", "macintosh", "bottle", "book" };
+            var input = new string[] { "pi", "paris", "applewatchbig", "ipod", "amsterdam", "bigbook", "orange", "waterbottle", "orangeapple", "bigwater", "waterbig" };
+            var hashSet = new HashSet<string>();
+            var resultSet = new List<string>();
+
+            foreach (var i in dictionary)
+            {
+                hashSet.Add(i);
+            }
+
+            foreach (var word in input)
+            {
+                int windowStart = 0;
+                int windowEnd = 1;
+                while (windowEnd <= word.Length)
+                {
+                    var currentSubstring = word.Substring(windowStart, windowEnd - windowStart);
+                    if (hashSet.Contains(currentSubstring))
+                    {
+                        windowStart = windowEnd;
+                        if (windowEnd == word.Length)
+                            resultSet.Add(word);
+
+                    }
+                    windowEnd++;
+                }
+            }
+            return resultSet;
+        }
+
+
+        public static List<double> MedianSlidingWindow(List<int> nums, int k)
+        {
+            List<double> medians = new List<double>();
+            List<int> window = new List<int>(k);
+
+            for (int i = 0; i + k <= nums.Count; i++)
+            {
+                window.AddRange(nums.GetRange(i, k));
+                window.Sort();
+
+                if ((k & 1) != 0)
+                {
+                    medians.Add(window[k / 2]);
+                }
+                else
+                {
+                    medians.Add((double)(window[k / 2 - 1] + (double)window[k / 2]) / 2.0);
+                }
+                window.Clear();
+            }
+
+            return medians;
         }
 
     }

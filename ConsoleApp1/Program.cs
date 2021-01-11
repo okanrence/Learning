@@ -233,7 +233,19 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
 
-            var fsskhvs = TopologicalSort.AlienDictionary(new String[] { "ba", "bc", "ac", "cab" });
+            //var fsdddsvs = SlidingWindow.MedianSlidingWindow(new List<int>() { 1, 3, -1, -3, 5, 3, 6, 7 }, 3);
+
+
+            //List<Interval> input = new List<Interval>();
+            //input.Add(new Interval(1, 3));
+            //input.Add(new Interval(5, 7));
+            //input.Add(new Interval(8, 12));
+
+
+            var dhjgjfgs = TopologicalSort.Multiply("10","3");
+           // var dhjgjfgs = Interval.InsertInterval(input, new Interval(4, 6));
+          //  var fsskhvs = DynamicProgramming.ReverseWords("  hello world  ");
+            //var fsskhvs = TopologicalSort.AlienDictionary(new String[] { "ba", "bc", "ac", "cab" });
             //var fsskhvs = TopologicalSort.Sort(4,  new int[][] { new int[] { 3, 2 }, new int[] { 3, 0 }, new int[] { 2, 0 }, new int[] { 2, 1 } });
             //var fsskhvs = DynamicProgramming.ValidPalindrome("canadanaec");
 

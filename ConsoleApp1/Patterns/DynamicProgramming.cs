@@ -1,7 +1,9 @@
 ﻿using ConsoleApp1;
 using Microsoft.VisualBasic.FileIO;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DataStructuresAndAlgos.Patterns
@@ -30,7 +32,6 @@ namespace DataStructuresAndAlgos.Patterns
             {
                 t[indices[i]] = s[i];
             }
-
 
             return new string(t);
         }
@@ -176,7 +177,7 @@ namespace DataStructuresAndAlgos.Patterns
             if (capacity < 0 || currentIndex >= profits.Length) return 0;
 
             int profit1 = 0;
-            if(weights[currentIndex]<= capacity)
+            if (weights[currentIndex] <= capacity)
             {
                 profit1 = profits[currentIndex] + knapsackRecursive(profits, weights, capacity - weights[currentIndex], currentIndex + 1);
             }
@@ -186,6 +187,91 @@ namespace DataStructuresAndAlgos.Patterns
             return Math.Max(profit1, profit2);
 
             //var car = Heap()
+        }
+
+        public static string ReverseWords(string s)
+        {
+            // return new string(s.Trim().Reverse().ToArray());
+
+            if (string.IsNullOrEmpty(s)) return string.Empty;
+
+            var sb = TrimSpaces(s);
+
+            Reverse(sb, 0, sb.Length - 1);
+
+            ReverseEachWord(sb);
+
+            return sb.ToString();
+
+
+        }
+
+
+        private static void Reverse(StringBuilder s, int left, int right)
+        {
+            while (left < right)
+            {
+                var temp = s[left];
+                s[left++] = s[right];
+                s[right--] = temp;
+            }
+        }
+
+        private static void ReverseEachWord(StringBuilder s)
+        {
+            int start = 0, end = 0, n = s.Length;
+
+            while (start < n)
+            {
+                while (end < n && s[end] != ' ') end++;
+
+                Reverse(s, start, end - 1);
+                start = end + 1;
+                end++;
+
+            }
+        }
+
+        public static StringBuilder TrimSpaces(string s)
+        {
+            int left = 0, right = s.Length - 1;
+
+            while (left <= right && s[left] == ' ') ++left;
+
+            while (left <= right && s[right] == ' ') --right;
+
+
+            StringBuilder sb = new StringBuilder();
+            while (left <= right)
+            {
+                var c = s[left];
+
+                if (c != ' ')
+                {
+                    sb.Append(c);
+                }
+                else if (sb[sb.Length - 1] != ' ') sb.Append(c);
+
+                left++;
+            }
+
+            return sb;
+        }
+
+        public static void Test()
+        {
+            var cnjs = new List<int>() { 1, 4, 5, 6, 7, 8, 9, 4 };
+
+            cnjs.Sort();
+            var se = cnjs.BinarySearch(6);
+
+            int k = 5;
+
+            int half = k >> 2;
+
+            int h = half;
+
+
         }
     }
 }
